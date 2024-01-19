@@ -1,0 +1,6 @@
+I'm a newbie but adventuresome. I'm tri-booting Windows, Fedora, and Ubuntu 14.04 LTS (all 64). Learning but not using dpkg, apt, and apt-get. Starting to study C++ using Ubuntu (the only one with gcc installed). So on my first attempted compile I ran the command gcc xy.cc and got the following:
+
+gcc: error trying to exec 'cc1plus' : execvp: No such file or directory
+So I searched my computer for cc1plus and execvp. And found neither. Just execvp.3.gz in directory /user/share/man/man3 and cc1 in /user/lib/gcc/x86_64-linux-gnu/4.8.
+
+So a whole bunch of work and learning about the package getters and checkers, but no courage to remove and reinstall etc.
