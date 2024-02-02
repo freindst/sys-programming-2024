@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 int main(){
@@ -12,16 +13,13 @@ int main(){
 
     char *buf;
 
-    buf = malloc(3);
+    buf = malloc(4);
 
     int nr;
 
-    nr = read(fd, buf, 2);
-
-    //buf = "st";
+    nr = read(fd, buf, 3);
 
     printf("%s", buf);
-
 
     free(buf);
 
