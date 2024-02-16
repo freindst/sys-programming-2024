@@ -9,8 +9,8 @@ unsigned int getIntFromBytes(char * buf){
 }
 
 int main(){
-    FILE * origin = fopen("darthvador.bmp", "r");
-    FILE * flipped = fopen("darthvador_flipped.bmp", "a+");
+    FILE * origin = fopen("darthvader.bmp", "r");
+    FILE * flipped = fopen("darthvader_flipped.bmp", "a+");
 
     //read the pixel of width and height from the header
     char intBuff[4];
