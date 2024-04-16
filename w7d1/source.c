@@ -28,6 +28,12 @@ unsigned int getIntFromBytes(char * buf){
 // we get char[0] by shifting all original bits right by 24 bits
 // [0, 0, 0, 0, 0.......o0, o1, o2, o3, o4, o5, o6, o7]
 // when we only keep char, it will truncate all the header 24 bits.
+// 32-bit unsigned int -> [byte0, byte1, byte2, byte3]
+// byte0: 25th: 32th bit
+// byte1: 17th: 24th bit
+// byte2: 9th: 16th bit
+// byte3: 1st: 8th bit
+// reverse order. left most byte is the most signifant byte
 char * int_to_int(unsigned int k) {
     static char ret[4];
     ret[3] = k >> 24; //convert a 32-bit int to 8-bit int, we only keep the right most 8 bits
@@ -43,7 +49,7 @@ int main(){
     char *newPath = "darthvader_new.bmp";
 
     //if our rotate works, that is it.
-    rotate(path, newPath, 0);
+    rotate(path, newPath, 5);
 
     return 0;
 }
@@ -85,7 +91,7 @@ void rotate(char *path, char *newPath, int mode){
     new = fopen(newPath, "w+");
     int widthPos = 18;
     int heightPos = 22;
-    int sizePos = 34;
+    int sizePos = 34;   //this one I made a mistake in reading documents
     int headerSize = 54;
     char intBuf[4];
     fseek(origin, widthPos, SEEK_SET);
@@ -122,13 +128,13 @@ void rotate(char *path, char *newPath, int mode){
         buf = malloc(width * height * 3);
         char * buf1 = malloc(width * height * 3);
         fread(buf, 3, width * height, origin);
-        int x, y;
+        int x, y;   //represent the old picture
         for(y = 0; y < height; y++){
             for(x = 0; x < width; x++){
-                int index = y * width + x;
+                int index = y * width + x; //rotate 90degrees, x -> height - y -1; y -> x
                 int new_index = (height - y - 1) + x * height;
                 for(int k = 0; k < 3; k++){
-                    buf1[new_index * 3 + k] = buf[index * 3 + k];
+                    buf1[new_index * 3 + k] = buf[index * 3 + k]; //map the old picture's pixel to the new picture, by each color
                 }
             }
         }
@@ -148,7 +154,7 @@ void rotate(char *path, char *newPath, int mode){
         for(y = 0; y < height; y++){
             for(x = 0; x < width; x++){
                 int index = y * width + x;
-                int new_index = (height - y - 1) * width + (width - x - 1);
+                int new_index = (height - y - 1) * width + (width - x - 1); //count x and y from the end to reverse it
                 for(int k = 0; k < 3; k++){
                     buf1[new_index * 3 + k] = buf[index * 3 + k];
                 }
@@ -181,7 +187,7 @@ void rotate(char *path, char *newPath, int mode){
         for(y = 0; y < height; y++){
             for(x = 0; x < width; x++){
                 int index = y * width + x;
-                int new_index = y + (width - x - 1) * height;
+                int new_index = y + (width - x - 1) * height; //mapping between pixels
                 for(int k = 0; k < 3; k++){
                     buf1[new_index * 3 + k] = buf[index * 3 + k];
                 }
@@ -259,7 +265,7 @@ void rotate(char *path, char *newPath, int mode){
         for(y = 0; y < newHeight; y++){
             for (x = 0; x < newWidth; x++){
                 for (int channel = 0; channel < 3; channel++){
-                    unsigned char p0 = readBuffer[2 * y][2 * x * 3 + channel];
+                    unsigned char p0 = readBuffer[2 * y][2 * x * 3 + channel]; //color is from 0 to 255
                     unsigned char p1 = readBuffer[2 * y][(2 * x + 1) * 3 + channel];
                     unsigned char p2 = readBuffer[2 * y + 1][2 * x * 3 + channel];
                     unsigned char p3 = readBuffer[2 * y + 1][(2 * x + 1) * 3 + channel];
